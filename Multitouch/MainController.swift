@@ -134,6 +134,20 @@ class MainController: UIViewController {
         }
     }
     
+    private func cancelTouches() {
+        removeAllCircles()
+        centerInfoLabel.isHidden = false
+        centerInfoLabel.animatePulse()
+        Vibration.error.vibrate()
+    }
+    
+    private func removeAllCircles() {
+        circles.forEach { (key: Int, value: CustomImageView) in
+            value.removeFromSuperview()
+        }
+        circles.removeAll()
+    }
+    
     @objc private func addFirstCircle(_ sender: UITapGestureRecognizer) {
         let senderHash = sender.hash
         if sender.state == .began {
@@ -141,6 +155,9 @@ class MainController: UIViewController {
         }
         if sender.state == .ended {
             endOfTouch(hash: senderHash)
+        }
+        if sender.state == .cancelled {
+            removeAllCircles()
         }
     }
 }
@@ -152,13 +169,6 @@ extension MainController: UIGestureRecognizerDelegate {
         }
     }
     
-    private func removeAllCircles() {
-        circles.forEach { (key: Int, value: CustomImageView) in
-            value.removeFromSuperview()
-        }
-        circles.removeAll()
-    }
-    
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         touches.forEach { touch in
             let touchHash = touch.hash
@@ -167,9 +177,6 @@ extension MainController: UIGestureRecognizerDelegate {
     }
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        removeAllCircles()
-        centerInfoLabel.isHidden = false
-        centerInfoLabel.animatePulse()
-        Vibration.error.vibrate()
+        cancelTouches()
     }
 }
