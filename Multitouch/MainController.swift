@@ -16,10 +16,9 @@ class MainController: UIViewController {
     @IBOutlet weak var bottomInfoLabel: UILabel!
     
     private var fingerCircle: CustomImageView {
-        let uiImageView = CustomImageView()
-        uiImageView.image = UIImage(systemName: "circle")
-        uiImageView.tintColor = .systemBlue
-        return uiImageView
+        let view = CustomImageView()
+        view.circleColor = .blue
+        return view
     }
     
     @Published private var circles: [Int: CustomImageView] = [:]
@@ -91,12 +90,13 @@ class MainController: UIViewController {
             allViews.append(value)
         }
         allViews.forEach { imageView in
-            imageView.tintColor = .systemGreen
+            imageView.circleColor = .green
         }
         let randomView = allViews.randomElement()
-        randomView?.tintColor = .systemRed
+        randomView?.circleColor = .red
         randomView?.defeatStatus = true
         randomView?.animatePulse()
+        randomView?.stopAnimating()
         gameEnded = true
         Vibration.error.vibrate()
     }
@@ -113,6 +113,7 @@ class MainController: UIViewController {
         fingerCircle.frame = CGRect(origin: position, size: size)
 
         self.view.addSubview(fingerCircle)
+        fingerCircle.startAnimating()
         Vibration.medium.vibrate()
     }
     

@@ -18,11 +18,11 @@ extension UILabel {
 
 extension UIView {
     func animatePulse() {
-        UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: 0.4, animations: {
             self.transform = CGAffineTransform(scaleX: 1.7, y: 1.7)
             self.alpha = 0.5
         }) { (_) in
-            UIView.animate(withDuration: 0.2) {
+            UIView.animate(withDuration: 0.3) {
                 self.transform = CGAffineTransform.identity
                 self.alpha = 1.0
             }
